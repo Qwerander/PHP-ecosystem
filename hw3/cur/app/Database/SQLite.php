@@ -19,7 +19,7 @@ class SQLite extends Db
             null,
             array(PDO::ATTR_PERSISTENT => true)
         );
-        
+
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }

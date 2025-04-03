@@ -10,9 +10,9 @@ class ConsoleKernel
 {
     const HELP_TEXT = "
     Для работы необходимо ввести название команды через флаг -c или --command .
-    
-    Пример: 
-    php runner -c parser 
+
+    Пример:
+    php runner -c parser
     ";
 
     private Application $app;
@@ -36,7 +36,7 @@ class ConsoleKernel
         if (empty($command)) {
             echo self::HELP_TEXT;
         } else {
-            $controllerClass = '\\App\\Commands\\' . Str::camel($command).'Command';
+            $controllerClass = '\\App\\Commands\\' . Str::camel($command) . 'Command';
 
             if (class_exists($controllerClass)) {
                 $controller = new $controllerClass($this->app);
