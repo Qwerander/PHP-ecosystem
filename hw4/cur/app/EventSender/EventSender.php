@@ -1,4 +1,5 @@
 <?php
+
 namespace App\EventSender;
 
 use App\Telegram\TelegramApi;

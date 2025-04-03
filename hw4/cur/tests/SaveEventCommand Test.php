@@ -3,6 +3,9 @@
 use PHPUnit\Framework\TestCase;
 
 
+/**
+ * @covers SaveEventCommand
+ */
 class SaveEventCommandTest extends TestCase
 {
     /**
@@ -26,6 +29,8 @@ class SaveEventCommandTest extends TestCase
                     'text' => "some-text",
                     'receiver' => "some-reciver",
                     'cron' => "some-cron",
+                    // 'help',
+                    // 'h',
                 ],
                 false
             ],
@@ -66,6 +71,8 @@ class SaveEventCommandTest extends TestCase
                     'text' => "some-text",
                     'receiver' => null,
                     'cron' => "some-cron",
+                    // 'help',
+                    // 'h',
                 ],
                 true
             ],
@@ -75,6 +82,8 @@ class SaveEventCommandTest extends TestCase
                     'text' => null,
                     'receiver' => "some-reciver",
                     'cron' => "some-cron",
+                    // 'help',
+                    // 'h',
                 ],
                 true
             ],
@@ -84,6 +93,8 @@ class SaveEventCommandTest extends TestCase
                     'text' => "some-text",
                     'receiver' => "some-reciver",
                     'cron' => "some-cron",
+                    // 'help',
+                    // 'h',
                 ],
                 true
             ],

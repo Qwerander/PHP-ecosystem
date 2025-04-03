@@ -2,6 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers HandleEventsCommand
+ */
 class HandleEventsCommandTest extends TestCase
 {
     /**
@@ -9,7 +12,7 @@ class HandleEventsCommandTest extends TestCase
      */
     public function testShouldEventBeRanReceiveEventDtoAndReturnCorrectBool(array $event, bool $shouldEventBeRan): void
     {
-        
+
 
         $handleEventsCommand = new \App\Commands\HandleEventsCommand(new \App\Application(dirname(__DIR__)));
 
@@ -17,12 +20,12 @@ class HandleEventsCommandTest extends TestCase
 
         self::assertEquals($result, $shouldEventBeRan);
     }
-    
+
     public static function eventDtoDataProvider(): array
     {
         return [
             [
-                
+
                 [
                     'minute' => date('i'),
                     'hour' => date('H'),
@@ -31,7 +34,7 @@ class HandleEventsCommandTest extends TestCase
                     'day_of_week' => date('w'),
                 ],
                 true
-                
+
             ],
             [
                 [
@@ -85,6 +88,5 @@ class HandleEventsCommandTest extends TestCase
             ],
 
         ];
-           
     }
 }

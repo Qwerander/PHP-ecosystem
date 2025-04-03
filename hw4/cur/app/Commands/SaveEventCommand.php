@@ -2,36 +2,29 @@
 
 namespace App\Commands;
 
+use App\Actions\Cron;
+use App\Actions\EventSaver;
 use App\Application;
 use App\Database\SQLite;
+use App\Exceptions\WrongCronString;
 use App\Models\Event;
 
-//php runner -c save_event --name 'Имя события' --receiver ‘Айди получателя, пока
-//любой’ --text 'Текст напоминания' --cron '* * * * *'
 class SaveEventCommand extends Command
 {
-
     protected Application $app;
 
     public function __construct(Application $app)
-
     {
-
         $this->app = $app;
-
     }
-    public function run(array $options  = []): void
 
+    public function run(array $options = []): void
     {
-
         $options = $this->getGetoptOptionValues();
 
         if ($this->isNeedHelp($options)) {
-
             $this->showHelp();
-
             return;
-
         }
 
         $cronValues = $this->getCronValues($options['cron']);
@@ -41,7 +34,6 @@ class SaveEventCommand extends Command
             $this->showHelp();
 
             return;
-
         }
 
         $params = [
@@ -64,74 +56,10 @@ class SaveEventCommand extends Command
 
         ];
 
-        $this->saveEvent($params);
+        $eventModel = new Event(new SQLite($this->app));
 
-    }
-
-    private function getGetoptOptionValues(): array
-
-    {
-
-        $shortopts = 'c:h:';
-
-        $longopts = [
-
-            "command:",
-
-            "name:",
-
-            "text:",
-
-            "receiver:",
-
-            "cron:",
-
-            "help:",
-
-        ];
-
-        return getopt($shortopts, $longopts);
-
-    }
-
-    public function isNeedHelp(array $options): bool
-
-    {
-
-        return !isset($options['name']) ||
-
-            !isset($options['text']) ||
-
-            !isset($options['receiver']) ||
-
-            !isset($options['cron']) ||
-
-            isset($options['help']) ||
-
-            isset($options['h']);
-
-    }
-
-    public function showHelp()
-
-    {
-
-        echo " Это тестовый скрипт добавления правил
-
-	Чтобы добавить правило нужно перечислить следующие поля:
-
-	--name Имя события
-
-	--text Текст, который будет отправлен по событию
-
-	--cron  Расписания отправки в формате cron
-
-	--receiver Идентификатор получателя сообщения
-
-	Для справки используйте флаги -h или --help
-
-";
-
+        $eventSaver = new EventSaver($eventModel);
+        $eventSaver->handle($params);
     }
 
     private function getCronValues(string $cronString): array
@@ -143,27 +71,51 @@ class SaveEventCommand extends Command
         $cronValues = array_map(function ($item) {
 
             return $item === "*" ? null : $item;
-
         }, $cronValues);
 
         return $cronValues;
-
     }
 
-    private function saveEvent(array $params): void
 
+    private function getGetoptOptionValues(): array
     {
+        $shortopts = 'c:h:';
 
-        $event = new Event(new SQLite($this->app));
+        $longopts = [
+            "command:",
+            "name:",
+            "text:",
+            "receiver:",
+            "cron:",
+            "help:",
+        ];
 
-        $event->insert(
-
-            implode(', ', array_keys($params)),
-
-            array_values($params)
-
-        );
-
+        return getopt($shortopts, $longopts);
     }
 
+    public function isNeedHelp(array $options): bool
+    {
+        return !isset($options['name']) ||
+            !isset($options['text']) ||
+            !isset($options['receiver']) ||
+            !isset($options['cron']) ||
+            isset($options['help']) ||
+            isset($options['h']);
+    }
+
+    public function showHelp()
+    {
+        echo "
+                     	СПРАВКА
+        	Это тестовый скрипт добавления правил
+        	Чтобы добавить правило нужно перечислить следующие поля:
+        	--name Имя события
+        	--text Текст, который будет отправлен по событию
+        	--cron  Расписания отправки в формате cron
+        	--receiver Идентификатор получателя сообщения
+
+        	Для справки используйте флаги -h или --help
+
+        ";
+    }
 }

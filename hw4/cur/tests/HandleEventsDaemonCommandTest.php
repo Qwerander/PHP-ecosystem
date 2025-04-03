@@ -2,6 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers HandleEventsDaemonCommand
+ */
 class HandleEventsDaemonCommandTest extends TestCase
 {
     public function testGetCurrentTime()
@@ -9,9 +12,9 @@ class HandleEventsDaemonCommandTest extends TestCase
         $handleEventsDaemonCommand = new \App\Commands\HandleEventsDaemonCommand(new \App\Application(dirname(__DIR__)));
 
         $result = $handleEventsDaemonCommand->getCurrentTime();
-    
+
         self::assertNotEmpty($result);
-        
+
         self::assertEquals(
             [
                 date("i"),
